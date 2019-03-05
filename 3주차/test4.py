@@ -26,10 +26,10 @@ for item in info['response']['docs']:
 conn = sqlite3.connect('test.sqlite')
 cur = conn.cursor()
 
-cur.execute('DROP TABLE IF EXISTS Test')
+cur.execute('DROP TABLE IF EXISTS docs')
 
 cur.execute('''
-CREATE TABLE Test (id TEXT, journal TEXT, eissn TEXT,
+CREATE TABLE docs (id TEXT, journal TEXT, eissn TEXT,
     publication_date TIME, article_type TEXT,
     author_display TEXT, 
     abstract TEXT, 
@@ -49,7 +49,7 @@ for item in info['response']['docs']:
     title_display = item['title_display']
     score = float(item['score'])
 
-    cur.execute('''INSERT INTO Test (id, journal, eissn, publication_date, 
+    cur.execute('''INSERT INTO docs (id, journal, eissn, publication_date, 
     author_display, abstract, title_display, score)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', (id, journal, eissn,
                 publication_date, author_display, abstract, title_display,
@@ -59,12 +59,12 @@ for item in info['response']['docs']:
 
 # https://www.sqlite.org/lang_select.html
 sqlstr = '''SELECT id, journal,eissn, publication_date, 
-    author_display, abstract, title_display, score FROM Test'''
+    author_display, abstract, title_display, score FROM docs'''
 
 print()
 print()
 for row in cur.execute(sqlstr):
-    print(str(row[0]), '\n', row[1], '\n', row[2], '\n', row[3], '\n', row[4], '\n', row[5], '\n', row[6], '\n', row[7])
+    print(row[0], '\n', row[1], '\n', row[2], '\n', row[3], '\n', row[4], '\n', row[5], '\n', row[6], '\n', row[7])
     print()
     print()
 
